@@ -1816,7 +1816,9 @@ class PageTranslator(private val context: Context) {
                 return false
             }
 
+            // 沒譯成的區（譯文空白或＝原文）不去字、不排版＝保留原圖（與引擎 Pipeline 一致，不重貼 OCR 原文）
             val regions = regionsFromMaterials(materials)
+                .filter { it.translatedText.isNotBlank() && it.translatedText.trim() != it.sourceText.trim() }
             val cleaned = inpainter!!.inpaint(original, regions, mask) // 引擎內部 copy 輸入，不會 mutate original/mask
             val finalPage = Renderer.render(cleaned, regions, renderCfg!!, null) // 引擎內部 copy cleaned
 
