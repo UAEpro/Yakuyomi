@@ -1,0 +1,44 @@
+diff --git a/engine/src/main/kotlin/li/joye/yakuyomi/engine/Renderer.kt b/engine/src/main/kotlin/li/joye/yakuyomi/engine/Renderer.kt
+index 96a5895..3632cc3 100644
+--- a/engine/src/main/kotlin/li/joye/yakuyomi/engine/Renderer.kt
++++ b/engine/src/main/kotlin/li/joye/yakuyomi/engine/Renderer.kt
+@@ -243,6 +243,8 @@ object Renderer {
+     }
+ 
+     private fun wrapCjk(text: String, paint: Paint, maxW: Float): List<String> {
++        // 有空白分詞的非中日文（阿拉伯文、拉丁字母…）按詞換行：逐字切會把詞拆兩半（阿拉伯文連寫字形也會斷開）。
++        if (!isCjk(text) && text.contains(' ')) return wrapWords(text, paint, maxW)
+         val lines = ArrayList<String>()
+         val cur = StringBuilder()
+         for (ch in text) {
+@@ -256,6 +258,30 @@ object Renderer {
+         return lines
+     }
+ 
++    /** 按空白分詞換行；單一個詞比行寬還長才退回逐字切。 */
++    private fun wrapWords(text: String, paint: Paint, maxW: Float): List<String> {
++        val lines = ArrayList<String>()
++        for (para in text.split('\n')) {
++            var cur = ""
++            for (word in para.split(' ').filter { it.isNotEmpty() }) {
++                val cand = if (cur.isEmpty()) word else "$cur $word"
++                if (paint.measureText(cand) <= maxW) { cur = cand; continue }
++                if (cur.isNotEmpty()) lines.add(cur)
++                if (paint.measureText(word) <= maxW) { cur = word; continue }
++                val chunk = StringBuilder()
++                for (ch in word) {
++                    if (chunk.isNotEmpty() && paint.measureText(chunk.toString() + ch) > maxW) {
++                        lines.add(chunk.toString()); chunk.clear()
++                    }
++                    chunk.append(ch)
++                }
++                cur = chunk.toString()
++            }
++            lines.add(cur)
++        }
++        return lines.filter { it.isNotEmpty() }.ifEmpty { listOf("") }
++    }
++
+     private const val ASCENT = 0.82f
+     private const val STROKE_RATIO = 0.10f  // 描邊寬＝字級×此比例（隨字級縮放）
+     private const val MAX_TCY = 4  // 縱中橫一格最多併幾個 ASCII（涵蓋 2 位數年齡、4 位數年份；更長退回逐字避免壓太扁）

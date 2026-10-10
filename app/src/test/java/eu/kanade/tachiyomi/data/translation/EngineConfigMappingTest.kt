@@ -117,6 +117,25 @@ class EngineConfigMappingTest {
     }
 
     @Test
+    fun `auto 排版：非中日韓目標語言改橫排，使用者明確選的方向照舊`() {
+        EngineConfigMapping.renderConfig(prefs()).orientation shouldBe TextOrientation.AUTO
+        for (cjk in listOf("Japanese", "Simplified Chinese", "Korean", "Cantonese")) {
+            EngineConfigMapping.renderConfig(prefs { targetLangName.set(cjk) }).orientation shouldBe
+                TextOrientation.AUTO
+        }
+        for (other in listOf("Arabic", "Egyptian Arabic", "English", "Klingon")) {
+            EngineConfigMapping.renderConfig(prefs { targetLangName.set(other) }).orientation shouldBe
+                TextOrientation.HORIZONTAL
+            EngineConfigMapping.renderConfig(
+                prefs {
+                    targetLangName.set(other)
+                    orientation.set("vertical")
+                },
+            ).orientation shouldBe TextOrientation.VERTICAL
+        }
+    }
+
+    @Test
     fun `去字法舊值與 auto_whole 建出同一份引擎設定，簽章可用映射後的值`() {
         for (p in listOf(prefs(), prefs { tileSize.set(1024) })) {
             val whole = EngineConfigMapping.buildEngineConfig(p, "auto_whole")
