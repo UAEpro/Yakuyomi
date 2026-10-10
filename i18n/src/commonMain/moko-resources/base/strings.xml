@@ -515,6 +515,8 @@
     <string name="pref_translation_lang_portuguese">Portuguese</string>
     <string name="pref_translation_lang_russian">Russian</string>
     <string name="pref_translation_lang_auto_detect">Auto-detect</string>
+    <string name="pref_translation_lang_search_hint">Search or type any language</string>
+    <string name="pref_translation_lang_use_custom">Use custom: %s</string>
     <string name="pref_category_tracking">Tracking</string>
     <string name="pref_category_advanced">Advanced</string>
     <string name="pref_category_about">About</string>
