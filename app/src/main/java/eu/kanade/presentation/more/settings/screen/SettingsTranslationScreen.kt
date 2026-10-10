@@ -333,6 +333,7 @@ object SettingsTranslationScreen : SearchableSettings {
             TranslationPreferences.DEFAULT_SOURCE_LANG to "Japanese — 日本語",
             TranslationPreferences.DEFAULT_TARGET_LANG to tradChineseLabel,
         )
+
         // 顯示目前值：預設值用在地化名稱，其餘（含自訂）直接顯示儲存的語言名。
         fun langLabel(value: String, pinned: List<Pair<String, String>>) =
             if (value.isEmpty()) autoDetectLabel else pinned.firstOrNull { it.first == value }?.second ?: value
