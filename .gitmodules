@@ -1,4 +1,4 @@
 [submodule "yakuyomi-engine"]
 	path = yakuyomi-engine
 	url = https://github.com/UAEpro/yakuyomi-engine.git
-	branch = arabic-fixes
+	branch = main
