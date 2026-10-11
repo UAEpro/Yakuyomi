@@ -496,7 +496,7 @@
     <string name="enhancements_guide_ls_desc_title">Collapsible description</string>
     <string name="enhancements_guide_ls_desc_desc">Choose whether a manga\'s description opens expanded or collapsed.</string>
     <string name="pref_translation_orientation">Text direction</string>
-    <string name="pref_translation_orientation_auto">Auto (follow source)</string>
+    <string name="pref_translation_orientation_auto">Auto (follow source; horizontal for non-CJK languages)</string>
     <string name="pref_translation_orientation_vertical">Vertical (vertical-first)</string>
     <string name="pref_translation_orientation_horizontal">Horizontal (horizontal-first)</string>
     <string name="pref_translation_inpaint_method">Text removal method</string>
